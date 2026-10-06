@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Ticket, Calendar, CheckCircle2, Star } from "lucide-react";
+import { Ticket, Calendar, CheckCircle2 } from "lucide-react";
 
 function StudentDashboard() {
   // Simple state for feedback demonstration
@@ -119,7 +119,7 @@ function StudentDashboard() {
                   </span>
                 </div>
                 <p className="text-xs text-gray-500">
-                  {item.date} • {item.venue}
+                  {item.date} | {item.venue}
                 </p>
               </div>
 
@@ -143,7 +143,7 @@ function StudentDashboard() {
                       </button>
                     ) : (
                       <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
-                        Feedback Recorded (5★)
+                        Feedback Recorded (Rating: 5/5)
                       </span>
                     )}
                   </div>
@@ -170,9 +170,13 @@ function StudentDashboard() {
                       type="button"
                       key={num}
                       onClick={() => setRating(num)}
-                      className={`p-1.5 rounded ${rating >= num ? "text-amber-500" : "text-gray-300"}`}
+                      className={`px-3 py-1.5 rounded text-xs font-semibold border transition ${
+                        rating === num
+                          ? "bg-indigo-600 text-white border-indigo-600"
+                          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      }`}
                     >
-                      <Star className="w-5 h-5 fill-current" />
+                      {num} / 5
                     </button>
                   ))}
                 </div>

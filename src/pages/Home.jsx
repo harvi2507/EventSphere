@@ -49,7 +49,7 @@ function Home() {
             to="/events"
             className="text-sm font-semibold text-indigo-600 hover:text-indigo-700"
           >
-            View all →
+            View all -&gt;
           </Link>
         </div>
 
@@ -99,21 +99,6 @@ function Home() {
             <p className="text-xs text-gray-500">Get scanned at the venue entrance and mark attendance.</p>
           </div>
 
-        </div>
-      </section>
-
-      {/* Innovation Highlight Banner (Useful for faculty presentation) */}
-      <section className="bg-indigo-50 border border-indigo-100 rounded-xl p-6 text-sm">
-        <h3 className="font-bold text-indigo-900 mb-2">💡 Project Innovation: The Modern Event Workflow</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="bg-white p-3 rounded border border-indigo-100">
-            <span className="font-semibold text-red-600">Traditional Campus Method:</span>
-            <p className="text-gray-600 mt-1">WhatsApp broadcast ➔ Clunky Google Form ➔ Messy Excel spreadsheet ➔ Manual paper attendance ➔ Separate feedback link</p>
-          </div>
-          <div className="bg-white p-3 rounded border border-indigo-100">
-            <span className="font-semibold text-green-700">With EventSphere:</span>
-            <p className="text-gray-600 mt-1">Central discovery ➔ 1-click registration ➔ Automated QR ticket pass ➔ Instant gate attendance scan ➔ Seamless feedback</p>
-          </div>
         </div>
       </section>
 

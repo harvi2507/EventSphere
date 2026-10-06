@@ -2,23 +2,35 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Mail, UserCheck } from "lucide-react";
 
-function Login() {
+function Login({ onLogin }) {
   const navigate = useNavigate();
 
-  // Simple state for login credentials & role selection
+  // Simple state for login credentials & role selection (Student or Admin / Organizer)
   const [email, setEmail] = useState("student@nirmauni.ac.in");
   const [password, setPassword] = useState("password123");
   const [role, setRole] = useState("student");
 
-  const handleLogin = (e) => {
+  const handleRoleChange = (selectedRole) => {
+    setRole(selectedRole);
+    if (selectedRole === "student") {
+      setEmail("student@nirmauni.ac.in");
+    } else {
+      setEmail("admin@nirmauni.ac.in");
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Frontend role redirection demonstration
+    // Call onLogin if passed from App
+    if (onLogin) {
+      onLogin(role);
+    }
+
+    // Role redirection
     if (role === "student") {
-      navigate("/student");
-    } else if (role === "organizer") {
-      navigate("/organizer");
-    } else if (role === "admin") {
+      navigate("/");
+    } else {
       navigate("/admin");
     }
   };
@@ -33,10 +45,10 @@ function Login() {
             <UserCheck className="w-5 h-5" />
           </div>
           <h1 className="text-xl font-bold text-gray-900">Sign in to EventSphere</h1>
-          <p className="text-xs text-gray-500 mt-1">Select your college portal role below</p>
+          <p className="text-xs text-gray-500 mt-1">Select your role to access your portal</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* Email field */}
           <div>
@@ -68,36 +80,40 @@ function Login() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="********"
                 className="w-full text-sm pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
               />
             </div>
           </div>
 
-          {/* Role selector */}
+          {/* Role selector: exactly two options */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2">
               Select Role
             </label>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: "student", label: "Student" },
-                { id: "organizer", label: "Organizer" },
-                { id: "admin", label: "Admin" }
-              ].map((item) => (
-                <button
-                  type="button"
-                  key={item.id}
-                  onClick={() => setRole(item.id)}
-                  className={`py-2 text-xs font-medium rounded-lg border transition ${
-                    role === item.id
-                      ? "bg-indigo-50 border-indigo-500 text-indigo-700 font-semibold"
-                      : "border-gray-200 text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => handleRoleChange("student")}
+                className={`py-2.5 text-xs font-medium rounded-lg border transition ${
+                  role === "student"
+                    ? "bg-indigo-50 border-indigo-500 text-indigo-700 font-semibold"
+                    : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Student
+              </button>
+              <button
+                type="button"
+                onClick={() => handleRoleChange("admin")}
+                className={`py-2.5 text-xs font-medium rounded-lg border transition ${
+                  role === "admin"
+                    ? "bg-indigo-50 border-indigo-500 text-indigo-700 font-semibold"
+                    : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Admin / Organizer
+              </button>
             </div>
           </div>
 
@@ -106,12 +122,12 @@ function Login() {
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-sm mt-2"
           >
-            Login as {role.charAt(0).toUpperCase() + role.slice(1)}
+            Login as {role === "student" ? "Student" : "Admin / Organizer"}
           </button>
 
           {/* Demo helper note */}
           <div className="bg-gray-50 border border-gray-200 p-3 rounded-lg text-[11px] text-gray-500 text-center">
-            💡 <strong>Demo Presentation:</strong> Choose any role above to test that specific dashboard.
+            <strong>Demo Note:</strong> Choose Student or Admin / Organizer to test the dashboard.
           </div>
 
         </form>

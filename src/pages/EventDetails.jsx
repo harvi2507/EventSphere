@@ -3,9 +3,12 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import initialEvents from "../data/events";
 import { Calendar, Clock, MapPin, Users, ArrowLeft, CheckCircle } from "lucide-react";
 
-function EventDetails() {
+function EventDetails({ role }) {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Read role from prop or fallback to localStorage
+  const currentRole = role || localStorage.getItem("eventSphere_role");
 
   // Simple state to track registration
   const [registered, setRegistered] = useState(false);
@@ -14,6 +17,17 @@ function EventDetails() {
   const event = initialEvents.find((e) => e.id === parseInt(id)) || initialEvents[0];
 
   const handleRegister = () => {
+    // If not logged in, redirect to login
+    if (!currentRole) {
+      navigate("/login");
+      return;
+    }
+
+    // Only students can register
+    if (currentRole !== "student") {
+      return;
+    }
+
     setRegistered(true);
   };
 
@@ -78,39 +92,41 @@ function EventDetails() {
           </p>
         </div>
 
-        {/* Registration Section */}
-        <div className="pt-4 border-t border-gray-100">
-          {!registered ? (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gray-50 p-4 rounded-lg">
-              <div>
-                <p className="text-sm font-semibold text-gray-800">Ready to participate?</p>
-                <p className="text-xs text-gray-500">Free entry for all registered university students.</p>
-              </div>
-              <button
-                onClick={handleRegister}
-                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm transition shadow-sm"
-              >
-                Register
-              </button>
-            </div>
-          ) : (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
+        {/* Registration Section - ONLY visible and active for Students */}
+        {currentRole === "student" && (
+          <div className="pt-4 border-t border-gray-100">
+            {!registered ? (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gray-50 p-4 rounded-lg">
                 <div>
-                  <h3 className="text-sm font-bold text-emerald-900">Registration Successful</h3>
-                  <p className="text-xs text-emerald-700">You are registered for this event. Your seat is confirmed.</p>
+                  <p className="text-sm font-semibold text-gray-800">Ready to participate?</p>
+                  <p className="text-xs text-gray-500">Free entry for all registered university students.</p>
                 </div>
+                <button
+                  onClick={handleRegister}
+                  className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm transition shadow-sm"
+                >
+                  Register
+                </button>
               </div>
-              <button
-                onClick={handleGoToTicket}
-                className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition"
-              >
-                View Ticket
-              </button>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
+                  <div>
+                    <h3 className="text-sm font-bold text-emerald-900">Registration Successful</h3>
+                    <p className="text-xs text-emerald-700">You are registered for this event. Your seat is confirmed.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleGoToTicket}
+                  className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition"
+                >
+                  View Ticket
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
       </div>
     </div>

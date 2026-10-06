@@ -147,7 +147,7 @@ function Ticket() {
 
         {/* Ticket Footer */}
         <div className="bg-gray-50 p-3 text-center border-t border-gray-100 text-[11px] text-gray-500">
-          Non-transferable • Valid for student admission only
+          Non-transferable | Valid for student admission only
         </div>
 
       </div>
